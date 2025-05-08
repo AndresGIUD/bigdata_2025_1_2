@@ -20,7 +20,16 @@ jobs:
         run: python -m venv venv
       - name: Paso 4 - Activar entorno virtual
         run: ./venv/Scripts/activate
+      - name: Paso 5 - Actualizar pip
+        run: pip install --upgrade pip
+      - name: Paso 6 - Instalar dependecias
+        run: pip install -e .
       - name: Paso 5 - Ejecutar Script
         run: python src/edu_bigdata/main.py
-      
-      
+      - name: Paso 6 - crear commit automatico
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Entrega de la actividad 1
+          commit_user_name: CamiloGraciano [GitHub Actions]
+          commit_user_email: andres.graciano@est.iudigital.edu.co
+          commit_author: CamiloGraciano <andres.graciano@est.iudigital.edu.co>
