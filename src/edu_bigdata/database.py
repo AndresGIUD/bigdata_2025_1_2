@@ -17,7 +17,7 @@ class DataBase:
             df.to_sql(name=nom_table,con=conn,if_exists='replace') # sobreescriba , inserte al final, actualizacion datos
             conn.close()
         except Exception as errores:
-            print("error al guradar los datos")
+            print("error al guardar los datos")
     
     def read_data(self,nom_table=""):
         df=pd.DataFrame()

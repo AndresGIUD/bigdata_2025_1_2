@@ -35,8 +35,8 @@ class DataWeb:
                 'Apertura': 'apertura',
                 'Máximo': 'max',
                 'Mínimo': 'min',
-                '% var.': 'cambio_porcentual',
-                'Vol.':'volumen'
+                'Vol.':'volumen',
+                '% var.': 'cambio_porcentual'
             })
             df = self.convertir_numericos(df)
             #df.to_excel("dataweb_limpio.xlsx")
