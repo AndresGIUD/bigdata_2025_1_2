@@ -10,7 +10,7 @@ class DataBase:
 
 
     # CRUD C = create(insert) R= read U = update DF= Delete
-    def insert_data(self,df = pd.DataFrame(),nom_table="datos_spotify_tech"):
+    def insert_data(self,df = pd.DataFrame(),nom_table="acciones_ordinarias_claseA"):
         try:
             df = df.copy()
             conn = sqlite3.connect(self.db_name)

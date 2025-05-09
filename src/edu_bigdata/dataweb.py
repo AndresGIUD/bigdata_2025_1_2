@@ -8,7 +8,7 @@ import datetime
 
 class DataWeb:
     def __init__(self):
-        self.url = "https://es.investing.com/equities/spotify-technology-historical-data"
+        self.url = "https://www.nasdaq.com/market-activity/stocks/ttd/historical?page=1&rows_per_page=10&timeline=m1"
     
 
     def obtener_datos(self):
@@ -30,13 +30,12 @@ class DataWeb:
                 if len(columnas) == len(nombre_columnas):
                     filas.append(columnas)
             df = pd.DataFrame(filas,columns=nombre_columnas).rename(columns = {
-                'Fecha': 'fecha',
-                'Último': 'ultimo',
-                'Apertura': 'apertura',
-                'Máximo': 'max',
-                'Mínimo': 'min',
-                'Vol.':'volumen',
-                '% var.': 'cambio_porcentual'
+                'Date': 'fecha',
+                'Close/Last': 'ultima',
+                'Volume':'volumen',
+                'Open': 'abierto',
+                'High': 'alto',
+                'Low': 'bajo',
             })
             df = self.convertir_numericos(df)
             #df.to_excel("dataweb_limpio.xlsx")
@@ -57,7 +56,7 @@ class DataWeb:
         df= df.copy()
         if len(df)>0:
             #for col in (df.columns):
-            for col in ('abrir',	'max',	'min',	'cerrar',	'cierre_ajustado',	'volumen'):
+            for col in ('ultima',	'volumen',	'abierto',	'alto',	'bajo'):
                 df[col] = (df[col]
                            .str.replace(r"\.","",regex=True)
                            .str.replace(",",'.'))
