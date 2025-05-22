@@ -9,7 +9,7 @@ def create_database(db_path):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     
-    # Create table
+    # Crear tabla
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS spotify_stock_data (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -37,7 +37,7 @@ def insert_data(db_path, processed_path):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     
-    # Insert data
+    # Insertar datos
     for _, row in df.iterrows():
         cursor.execute('''
             INSERT INTO spotify_stock_data (date, open_price, high_price, low_price, close_price, volume, change_percent)

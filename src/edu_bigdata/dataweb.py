@@ -20,10 +20,9 @@ def fetch_spotify_data(url):
         response.raise_for_status()
         tables = pd.read_html(response.text)
         
-        # The main table is typically the first one
         df = tables[0]
         
-        # Rename columns to match database schema
+        # Cambiar el nombre de las columnas para que coincidan con el esquema de la base de datos
         df.columns = ['date', 'close_price', 'open_price', 'high_price', 'low_price', 'volume', 'change_percent']
         
         return df
@@ -36,13 +35,13 @@ def clean_data(df):
     if df is None:
         return None
     
-    # Copy dataframe to avoid modifying the original
+    # Copie el marco de datos para evitar modificar el original.
     df_clean = df.copy()
     
-    # Convert date to proper format (e.g., '28/10/2025' to '2025-10-28')
+    # Convertir la fecha al formato adecuado
     df_clean['date'] = pd.to_datetime(df_clean['date'], format='%d/%m/%Y')
     
-    # Clean volume (e.g., '1.23M' or '123K' to integer)
+    # Limpiar volume (e.g., '1.23M' or '123K' to integer)
     def clean_volume(vol):
         if isinstance(vol, str):
             vol = vol.replace(',', '')
@@ -54,10 +53,10 @@ def clean_data(df):
     
     df_clean['volume'] = df_clean['volume'].apply(clean_volume)
     
-    # Clean change_percent (e.g., '+1.23%' to 1.23)
+    # limpiar change_percent (e.g., '+1.23%' to 1.23)
     df_clean['change_percent'] = df_clean['change_percent'].str.replace('%', '').astype(float)
     
-    # Ensure numeric columns
+    # Asegurar columnas numéricas
     numeric_cols = ['open_price', 'high_price', 'low_price', 'close_price']
     for col in numeric_cols:
         df_clean[col] = pd.to_numeric(df_clean[col], errors='coerce')
