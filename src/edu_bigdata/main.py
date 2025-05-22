@@ -1,27 +1,29 @@
-from dataweb import DataWeb
-from database import DataBase
-import pandas as pd
-
-
+from dataweb import fetch_spotify_data, save_data
+from database import create_database, insert_data
 
 def main():
-    df = pd.DataFrame()
-    dataweb = DataWeb()
-    database = DataBase()
-    df = dataweb.obtener_datos()
-    df = dataweb.convertir_numericos(df)
-    print("*************** imprecion de los datos obtenidos ************************")
-    print(df.shape)
-    print(df.head())
-    df.to_csv("src/edu_bigdata/static/csv/data_web.csv", index=False) #/workspaces/bigdata_2025_1_2/src/edu_bigdata/static/csv
-    nombre_tabla = "acciones_ordinarias_claseA"
-    database.insert_data(df,nombre_tabla)
-    print("*************** Insertar los datos obtenidos en la base datos tabla: {}*********".format(nombre_tabla))
-    print(df.shape)
-    print(df.head())
-    df_2 = database.read_data(nombre_tabla)
-    print(df_2.shape)
-    print(df_2.head())
+    """Main ETL pipeline for Spotify stock data."""
+    url = "https://es.investing.com/equities/spotify-technology-historical-data"
+    raw_path = "data/raw_spotify_data.csv"
+    processed_path = "data/processed_spotify_data.csv"
+    db_path = "db/spotify_stock.db"
+    
+    # Para obtener y guardar datos
+    df = fetch_spotify_data(url)
+    if df is None:
+        print("Failed to fetch data. Exiting.")
+        return
+    
+    clean_df = save_data(df, raw_path, processed_path)
+    if clean_df is None:
+        print("Failed to process data. Exiting.")
+        return
+    
+    # Crear base de datos e insertar datos
+    create_database(db_path)
+    insert_data(db_path, processed_path)
+    
+    print("ETL pipeline completed successfully.")
 
 if __name__ == "__main__":
     main()
